@@ -56,12 +56,27 @@ const Sidebar: React.FC<Props> = ({ items, setItems }) => {
     setItems(items.filter((i) => i.id !== id)); // remove before re-adding
   };
 
-  const groups = useMemo(() => Array.from(new Set(items.map((i) => i.group))), [items]);
-  // const groups = useMemo(() => {
+  // const groups = useMemo(() => Array.from(new Set(items.map((i) => i.group))), [items]);
+  const groups = useMemo(() => {
+    const _items: { name: string; items: IframeItem[] }[] = [];
 
-  //   let items: {group: string, items: IframeItem[]}[] = [] 
-  //   return items;
-  // }, [items]);
+    // Create a map to group items by their "group" property
+    const grouped: Record<string, IframeItem[]> = {};
+
+    items.forEach((item) => {
+      if (!grouped[item.group]) {
+        grouped[item.group] = [];
+      }
+      grouped[item.group].push(item);
+    });
+
+    // Convert grouped object into the desired array format
+    for (const [groupName, groupItems] of Object.entries(grouped)) {
+      _items.push({ name: groupName, items: groupItems });
+    }
+
+    return _items;
+  }, [items]);
 
   return (
     <div className="sidebar">
@@ -92,47 +107,53 @@ const Sidebar: React.FC<Props> = ({ items, setItems }) => {
 
       <h3 className="iframe-list-heading">iFrames</h3>
 
-      {groups.map((g) => (
-        <div key={g} className="iframe-group">
-          <h4 className="group-title">{g}</h4>
+      {groups.map((group, key1) => (
+        <div key={key1} className="iframe-group">
+          <h4 className="group-title">{group.name}</h4>
           <ReactSortable
-            list={items.filter((i) => i.group === g)}
+            list={group.items}
             setList={(newList) => {
-              const others = items.filter((i) => i.group !== g);
-              setItems([...others, ...newList]);
+              let updatedItems: IframeItem[] = [];
+              let _groups = [...groups];
+              let index = _groups.findIndex((i) => i.name == group.name);
+              if (index == -1) return;
+              _groups[index] = { name: group.name, items: newList };
+
+              _groups.forEach((element) => {
+                element.items.forEach((element2) => {
+                  updatedItems.push(element2);
+                });
+              });
+              setItems(updatedItems);
             }}
             animation={150}
             handle=".drag-handle"
+            // group="group"
           >
-            {items
-              .filter((i) => i.group === g)
-              .map((item) => (
-                <div key={item.id} className="iframe-list-item">
-                  <div className="iframe-item-left">
-                    <span className="drag-handle">
-                      <FaGripVertical />
-                    </span>
-                    <span className="iframe-item-title">{item.title}</span>
-                  </div>
-                  <div className="iframe-list-actions">
-                    <button
-                      title={item.visible ? "Hide" : "Show"}
-                      onClick={() => handleToggleVisibility(item.id)}
-                    >
-                      {item.visible ? <FaEye /> : <FaEyeSlash />}
-                    </button>
-                    <button title="Edit" onClick={() => handleEdit(item.id)}>
-                      <FaEdit />
-                    </button>
-                    <button
-                      title="Delete"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
+            {group.items.map((item, key2) => (
+              <div key={key2} className="iframe-list-item">
+                <div className="iframe-item-left">
+                  <span className="drag-handle">
+                    <FaGripVertical />
+                  </span>
+                  <span className="iframe-item-title">{item.title}</span>
                 </div>
-              ))}
+                <div className="iframe-list-actions">
+                  <button
+                    title={item.visible ? "Hide" : "Show"}
+                    onClick={() => handleToggleVisibility(item.id)}
+                  >
+                    {item.visible ? <FaEye /> : <FaEyeSlash />}
+                  </button>
+                  <button title="Edit" onClick={() => handleEdit(item.id)}>
+                    <FaEdit />
+                  </button>
+                  <button title="Delete" onClick={() => handleDelete(item.id)}>
+                    <FaTrash />
+                  </button>
+                </div>
+              </div>
+            ))}
           </ReactSortable>
         </div>
       ))}
