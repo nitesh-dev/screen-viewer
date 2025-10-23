@@ -19,6 +19,15 @@ const App: React.FC = () => {
     return [];
   });
 
+  // Debug iframe state changes
+  useEffect(() => {
+    console.log('App.tsx iframes state updated:', {
+      count: iframes.length,
+      withDimensions: iframes.filter(item => item.dimensions).length,
+      dimensions: iframes.map(item => ({ id: item.id, dimensions: item.dimensions }))
+    });
+  }, [iframes]);
+
   const [viewMode, setViewMode] = useState<"normal" | "compact">("normal");
 
   // 💾 Save to localStorage whenever iframes change
@@ -53,7 +62,6 @@ const App: React.FC = () => {
   return (
     <div className="app-container">
       <div className="main-content">
-        <TexturePacker />
         {iframes.length === 0 ? (
           <p className="placeholder-text">Add an iframe from the sidebar →</p>
         ) : (
@@ -66,7 +74,24 @@ const App: React.FC = () => {
                     <>
                       <div className="group" key={i}>
                         {group.map((iframe, i2) => (
-                          <IframeCard key={i2} item={iframe} />
+                          <IframeCard 
+                            key={i2} 
+                            item={iframe} 
+                            onSizeChange={(id, size) => {
+                              console.log('Normal view onSizeChange:', { id, size });
+                              setIframes(prev => prev.map(item => 
+                                item.id === id 
+                                  ? { 
+                                      ...item, 
+                                      dimensions: {
+                                        width: parseInt(size.width.replace('px', '')) || 300,
+                                        height: parseInt(size.height.replace('px', '')) || 200,
+                                      }
+                                    }
+                                  : item
+                              ));
+                            }}
+                          />
                         ))}
                       </div>
                     </>
@@ -76,7 +101,12 @@ const App: React.FC = () => {
             ) : (
               <>
                 {" "}
-                <div className="compact-view"> </div>
+                <div className="compact-view"> 
+                  <TexturePacker 
+                    iframeItems={iframes} 
+                    onIframeUpdate={setIframes}
+                  />
+                </div>
               </>
             )}
           </>

@@ -4,4 +4,8 @@ export interface IframeItem {
   code: string;
   visible: boolean;
   group: string;
+  dimensions?: {
+    width: number;
+    height: number;
+  };
 }
