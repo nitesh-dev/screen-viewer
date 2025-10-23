@@ -93,6 +93,49 @@ html,
   background-color: #fff;
 }
 
+.sidebar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.view-mode-toggle {
+  display: flex;
+  gap: 6px;
+  background: black;
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.view-mode-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.view-mode-btn:hover {
+  /* background: #e6e6e6; */
+  outline: none;
+}
+
+.view-mode-btn.active {
+  background: #007bff;
+  color: #fff;
+  outline: none;
+}
+
+
+
+
+
 .btn-primary {
   width: 100%;
   background-color: #0078ff;
@@ -192,6 +235,7 @@ html,
 .iframe-card iframe {
   border: 1px solid hsl(var(--border));
   border-radius: 8px;
+  height: 600px;
 }
 
 .iframe-card .iframe-title {}

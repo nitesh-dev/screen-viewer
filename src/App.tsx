@@ -19,6 +19,8 @@ const App: React.FC = () => {
     return [];
   });
 
+  const [viewMode, setViewMode] = useState<"normal" | "compact">("normal");
+
   // 💾 Save to localStorage whenever iframes change
   useEffect(() => {
     // localStorage.setItem("iframes", JSON.stringify(iframes));
@@ -51,23 +53,41 @@ const App: React.FC = () => {
   return (
     <div className="app-container">
       <div className="main-content">
-        {/* <TexturePacker/> */}
+        <TexturePacker />
         {iframes.length === 0 ? (
           <p className="placeholder-text">Add an iframe from the sidebar →</p>
         ) : (
-          frames.map((group, i) => (
-            <>
-              <div className="group" key={i}>
-                {group.map((iframe, i2) => (
-                  <IframeCard key={i2} item={iframe} />
-                ))}
-              </div>
-            </>
-          ))
+          <>
+            {viewMode == "normal" ? (
+              <>
+                {" "}
+                <div className="normal-view">
+                  {frames.map((group, i) => (
+                    <>
+                      <div className="group" key={i}>
+                        {group.map((iframe, i2) => (
+                          <IframeCard key={i2} item={iframe} />
+                        ))}
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {" "}
+                <div className="compact-view"> </div>
+              </>
+            )}
+          </>
         )}
       </div>
 
-      <Sidebar items={iframes} setItems={setIframes} />
+      <Sidebar
+        onViewModeChange={setViewMode}
+        items={iframes}
+        setItems={setIframes}
+      />
     </div>
   );
 };

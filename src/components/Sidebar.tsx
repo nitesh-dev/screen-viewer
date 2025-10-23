@@ -10,17 +10,21 @@ import {
   FaTrash,
   FaEdit,
   FaGripVertical,
+  FaCompressAlt,
+  FaExpandAlt,
 } from "react-icons/fa";
 
 interface Props {
   items: IframeItem[];
   setItems: React.Dispatch<React.SetStateAction<IframeItem[]>>;
+  onViewModeChange?: (mode: "normal" | "compact") => void;
 }
 
-const Sidebar: React.FC<Props> = ({ items, setItems }) => {
+const Sidebar: React.FC<Props> = ({ items, setItems, onViewModeChange }) => {
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
   const [group, setGroup] = useState("");
+  const [viewMode, setViewMode] = useState<"normal" | "compact">("normal");
 
   const handleAdd = () => {
     if (!title.trim() || !code.trim()) return;
@@ -56,32 +60,53 @@ const Sidebar: React.FC<Props> = ({ items, setItems }) => {
     setItems(items.filter((i) => i.id !== id)); // remove before re-adding
   };
 
-  // const groups = useMemo(() => Array.from(new Set(items.map((i) => i.group))), [items]);
+  const handleViewChange = (mode: "normal" | "compact") => {
+    setViewMode(mode);
+    onViewModeChange?.(mode);
+  };
+
   const groups = useMemo(() => {
-    const _items: { name: string; items: IframeItem[] }[] = [];
-
-    // Create a map to group items by their "group" property
     const grouped: Record<string, IframeItem[]> = {};
-
     items.forEach((item) => {
-      if (!grouped[item.group]) {
-        grouped[item.group] = [];
-      }
+      if (!grouped[item.group]) grouped[item.group] = [];
       grouped[item.group].push(item);
     });
-
-    // Convert grouped object into the desired array format
-    for (const [groupName, groupItems] of Object.entries(grouped)) {
-      _items.push({ name: groupName, items: groupItems });
-    }
-
-    return _items;
+    return Object.entries(grouped).map(([name, groupItems]) => ({
+      name,
+      items: groupItems,
+    }));
   }, [items]);
 
   return (
     <div className="sidebar">
-      <h2 className="sidebar-title">Add iFrame</h2>
+      {/* === Toolbar Section === */}
+      <div className="sidebar-toolbar">
+        <h2 className="sidebar-title">iFrame Manager</h2>
 
+        {/* Radio-style icon button group */}
+        <div className="view-mode-toggle">
+          <button
+            className={`view-mode-btn ${
+              viewMode === "normal" ? "active" : ""
+            }`}
+            title="Normal View"
+            onClick={() => handleViewChange("normal")}
+          >
+            <FaExpandAlt />
+          </button>
+          <button
+            className={`view-mode-btn ${
+              viewMode === "compact" ? "active" : ""
+            }`}
+            title="Compact View"
+            onClick={() => handleViewChange("compact")}
+          >
+            <FaCompressAlt />
+          </button>
+        </div>
+      </div>
+
+      {/* === Form Section === */}
       <div className="sidebar-form">
         <input
           type="text"
@@ -113,20 +138,14 @@ const Sidebar: React.FC<Props> = ({ items, setItems }) => {
           <ReactSortable
             list={group.items}
             setList={(newList) => {
-              console.log({ group: group.name, newList });
-              // Update all groups, replacing the current group's items with newList
               const updatedGroups = groups.map((g) =>
                 g.name === group.name ? { ...g, items: newList } : g
               );
-
-              // Flatten all groups back into a single items array
               const updatedItems = updatedGroups.flatMap((g) => g.items);
-
               setItems(updatedItems);
             }}
             animation={150}
             handle=".drag-handle"
-            // group="group"
           >
             {group.items.map((item, key2) => (
               <div key={key2} className="iframe-list-item">
