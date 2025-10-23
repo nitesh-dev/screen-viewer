@@ -239,3 +239,8 @@ html,
 }
 
 .iframe-card .iframe-title {}
+
+
+.compact-view .iframe-title{
+  display: none;
+}

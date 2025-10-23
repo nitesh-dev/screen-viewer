@@ -108,7 +108,7 @@ export class MaxRectsPacker {
 
     const orientations = [
       { w: rectWidth, h: rectHeight, rot: false },
-      { w: rectHeight, h: rectWidth, rot: true },
+      { w: rectHeight, h: rectWidth, rot: false },
     ];
 
     for (const orient of orientations) {

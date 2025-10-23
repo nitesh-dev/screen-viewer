@@ -185,9 +185,9 @@ const TexturePacker: React.FC<TexturePackerProps> = ({ iframeItems, onIframeUpda
           height: container.height,
           margin: "0 auto",
         //   background: "#1e1e1e",
-          border: "2px solid #444",
-          borderRadius: 6,
-          transition: "width 0.3s, height 0.3s",
+          // border: "2px solid #444",
+          // borderRadius: 6,
+          // transition: "width 0.3s, height 0.3s",
         }}
       >
         {rects.map((r) => {
@@ -203,7 +203,7 @@ const TexturePacker: React.FC<TexturePackerProps> = ({ iframeItems, onIframeUpda
                 top: r.y,
                 width: r.width,
                 height: r.height,
-                boxSizing: "border-box",
+                // border: `2px solid ${r.color}`,
               }}
             >
               <IframeCard 
