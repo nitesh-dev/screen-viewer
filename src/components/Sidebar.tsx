@@ -113,17 +113,15 @@ const Sidebar: React.FC<Props> = ({ items, setItems }) => {
           <ReactSortable
             list={group.items}
             setList={(newList) => {
-              let updatedItems: IframeItem[] = [];
-              let _groups = [...groups];
-              let index = _groups.findIndex((i) => i.name == group.name);
-              if (index == -1) return;
-              _groups[index] = { name: group.name, items: newList };
+              console.log({ group: group.name, newList });
+              // Update all groups, replacing the current group's items with newList
+              const updatedGroups = groups.map((g) =>
+                g.name === group.name ? { ...g, items: newList } : g
+              );
 
-              _groups.forEach((element) => {
-                element.items.forEach((element2) => {
-                  updatedItems.push(element2);
-                });
-              });
+              // Flatten all groups back into a single items array
+              const updatedItems = updatedGroups.flatMap((g) => g.items);
+
               setItems(updatedItems);
             }}
             animation={150}

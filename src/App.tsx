@@ -3,6 +3,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import IframeCard from "./components/IframeCard";
 import { type IframeItem } from "./types";
+import TexturePacker from "./components/TexturePacker/TexturePacker";
 
 const App: React.FC = () => {
   const [iframes, setIframes] = useState<IframeItem[]>(() => {
@@ -20,7 +21,7 @@ const App: React.FC = () => {
 
   // 💾 Save to localStorage whenever iframes change
   useEffect(() => {
-    localStorage.setItem("iframes", JSON.stringify(iframes));
+    // localStorage.setItem("iframes", JSON.stringify(iframes));
   }, [iframes]);
 
   const frames: IframeItem[][] = useMemo(() => {
@@ -50,6 +51,7 @@ const App: React.FC = () => {
   return (
     <div className="app-container">
       <div className="main-content">
+        {/* <TexturePacker/> */}
         {iframes.length === 0 ? (
           <p className="placeholder-text">Add an iframe from the sidebar →</p>
         ) : (
