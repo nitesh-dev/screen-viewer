@@ -12,15 +12,30 @@ import {
   FaGripVertical,
   FaCompressAlt,
   FaExpandAlt,
+  FaSearchPlus,
+  FaSearchMinus,
 } from "react-icons/fa";
+import { FaRotateRight } from "react-icons/fa6";
 
 interface Props {
   items: IframeItem[];
   setItems: React.Dispatch<React.SetStateAction<IframeItem[]>>;
   onViewModeChange?: (mode: "normal" | "compact") => void;
+  zoom: number;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onResetView: () => void;
 }
 
-const Sidebar: React.FC<Props> = ({ items, setItems, onViewModeChange }) => {
+const Sidebar: React.FC<Props> = ({ 
+  items, 
+  setItems, 
+  onViewModeChange, 
+  zoom, 
+  onZoomIn, 
+  onZoomOut, 
+  onResetView 
+}) => {
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
   const [group, setGroup] = useState("");
@@ -102,6 +117,35 @@ const Sidebar: React.FC<Props> = ({ items, setItems, onViewModeChange }) => {
             onClick={() => handleViewChange("compact")}
           >
             <FaCompressAlt />
+          </button>
+        </div>
+      </div>
+
+      {/* === Zoom Controls === */}
+      <div className="zoom-controls">
+        <h3>Zoom Controls</h3>
+        <div className="zoom-buttons">
+          <button
+            className="zoom-btn"
+            title="Zoom Out"
+            onClick={onZoomOut}
+          >
+            <FaSearchMinus />
+          </button>
+          <span className="zoom-level">{Math.round(zoom * 100)}%</span>
+          <button
+            className="zoom-btn"
+            title="Zoom In"
+            onClick={onZoomIn}
+          >
+            <FaSearchPlus />
+          </button>
+          <button
+            className="zoom-btn reset-btn"
+            title="Reset View"
+            onClick={onResetView}
+          >
+            <FaRotateRight />
           </button>
         </div>
       </div>

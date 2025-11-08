@@ -19,9 +19,15 @@ html,
 
 /* LAYOUT */
 .app-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr max-content;
   height: 100vh;
   width: 100vw;
+}
+
+
+.app-container .drag-view{
+  overflow: auto;
 }
 
 .main-content {
@@ -31,13 +37,13 @@ html,
   padding: 20px;
 
   gap: 100px;
-  overflow-y: auto;
+  overflow: visible;
   /* transform: scale(0.5); */
 }
 
 .main-content .group {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-content: flex-start;
   gap: 20px;
 
@@ -243,4 +249,98 @@ html,
 
 .compact-view .iframe-title{
   display: none;
+}
+
+
+.compact-view iframe{
+  pointer-events: none;
+
+}
+
+/* === ZOOM CONTROLS === */
+.zoom-controls {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.zoom-controls h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #495057;
+  font-weight: 600;
+}
+
+.zoom-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  color: #495057;
+  padding: 0;
+}
+
+.zoom-btn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.zoom-btn:active {
+  background: #dee2e6;
+  transform: scale(0.95);
+}
+
+.zoom-level {
+  min-width: 50px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+  background: white;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.reset-btn {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.reset-btn:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+/* === DRAG AND ZOOM STYLES === */
+.main-content {
+  transition: transform 0.1s ease-out;
+}
+
+.main-content:active {
+  cursor: grabbing;
+}
+
+/* Prevent text selection during drag */
+.main-content.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
