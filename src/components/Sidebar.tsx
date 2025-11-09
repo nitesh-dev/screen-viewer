@@ -91,6 +91,17 @@ const Sidebar: React.FC<Props> = ({
     }
   };
 
+  const handleToggleGroupVisibility = (groupName: string) => {
+    const groupItems = items.filter(i => i.group === groupName);
+    const allVisible = groupItems.every(i => i.visible);
+    
+    setItems(
+      items.map(i => 
+        i.group === groupName ? { ...i, visible: !allVisible } : i
+      )
+    );
+  };
+
   const handleViewChange = (mode: "normal" | "compact") => {
     setViewMode(mode);
     onViewModeChange?.(mode);
@@ -265,9 +276,25 @@ const Sidebar: React.FC<Props> = ({
 
       <h3 className="iframe-list-heading">iFrames</h3>
 
-      {groups.map((group, key1) => (
-        <div key={key1} className="iframe-group">
-          <h4 className="group-title">{group.name}</h4>
+      {groups.map((group, key1) => {
+        const allVisible = group.items.every(i => i.visible);
+        const visibleCount = group.items.filter(i => i.visible).length;
+        const hasHidden = visibleCount < group.items.length;
+        return (
+        <div key={key1} className={`iframe-group ${hasHidden ? 'has-hidden' : ''}`}>
+          <div className="group-header">
+            <div className="group-title-wrapper">
+              <h4 className="group-title">{group.name}</h4>
+              <span className="group-count">{visibleCount}/{group.items.length}</span>
+            </div>
+            <button
+              className="group-toggle-btn"
+              title={allVisible ? "Hide all in group" : "Show all in group"}
+              onClick={() => handleToggleGroupVisibility(group.name)}
+            >
+              {allVisible ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
           <ReactSortable
             list={group.items}
             setList={(newList) => {
@@ -277,39 +304,47 @@ const Sidebar: React.FC<Props> = ({
               const updatedItems = updatedGroups.flatMap((g) => g.items);
               setItems(updatedItems);
             }}
-            animation={150}
+            animation={200}
+            easing="cubic-bezier(1, 0, 0, 1)"
             handle=".drag-handle"
+            ghostClass="sortable-ghost"
+            chosenClass="sortable-chosen"
+            dragClass="sortable-drag"
           >
             {group.items.map((item, key2) => (
-              <div key={key2} className="iframe-list-item">
-                <div className="iframe-item-left">
-                  <span className="drag-handle">
-                    <FaGripVertical />
-                  </span>
-                  <span className="iframe-item-title">{item.title}</span>
-                </div>
-                <div className="iframe-list-actions">
-                  <button
-                    title={item.visible ? "Hide" : "Show"}
-                    onClick={() => handleToggleVisibility(item.id)}
-                  >
-                    {item.visible ? <FaEye /> : <FaEyeSlash />}
-                  </button>
-                  <button title="Copy Code" onClick={() => handleCopyCode(item.id)}>
-                    <FaCopy />
-                  </button>
-                  <button title="Edit" onClick={() => handleEdit(item.id)}>
-                    <FaEdit />
-                  </button>
-                  <button title="Delete" onClick={() => handleDelete(item.id)}>
-                    <FaTrash />
-                  </button>
+              <div key={key2} className={`iframe-list-item ${!item.visible ? 'hidden-item' : ''}`}>
+                <div className="iframe-item-content">
+                  <div className="iframe-item-left">
+                    <span className="drag-handle">
+                      <FaGripVertical />
+                    </span>
+                    <span className="iframe-item-title">{item.title}</span>
+                    {!item.visible && <span className="hidden-badge">Hidden</span>}
+                  </div>
+                  <div className="iframe-list-actions">
+                    <button
+                      title={item.visible ? "Hide" : "Show"}
+                      onClick={() => handleToggleVisibility(item.id)}
+                    >
+                      {item.visible ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                    <button title="Copy Code" onClick={() => handleCopyCode(item.id)}>
+                      <FaCopy />
+                    </button>
+                    <button title="Edit" onClick={() => handleEdit(item.id)}>
+                      <FaEdit />
+                    </button>
+                    <button title="Delete" onClick={() => handleDelete(item.id)}>
+                      <FaTrash />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </ReactSortable>
         </div>
-      ))}
+      )}
+      )}
     </div>
   );
 };

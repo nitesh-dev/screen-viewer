@@ -164,35 +164,117 @@ html,
   color: #333;
 }
 
+.iframe-group {
+  transition: opacity 0.2s ease;
+}
+
+.iframe-group.has-hidden {
+  opacity: 0.95;
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid hsl(var(--border));
+  padding-bottom: 6px;
+}
+
+.group-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .group-title {
   font-size: 0.95rem;
   color: #0078ff;
-  margin-top: 12px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid hsl(var(--border));
-  padding-bottom: 4px;
+  margin: 0;
+}
+
+.group-count {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  background: #e3f2fd;
+  color: #0078ff;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.has-hidden .group-count {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.group-toggle-btn {
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.group-toggle-btn:hover {
+  background-color: #0078ff;
+  color: #fff;
+  border-color: #0078ff;
+  transform: translateY(-1px);
+}
+
+.group-toggle-btn:active {
+  transform: translateY(0);
 }
 
 .iframe-list-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   background: #f9f9f9;
-  padding: 8px 10px;
+  padding: 10px;
   border-radius: 6px;
   margin-bottom: 8px;
   border: 1px solid hsl(var(--border));
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  cursor: default;
 }
 
 .iframe-list-item:hover {
   background: #eef4ff;
+  border-color: #0078ff;
+}
+
+/* Hidden item styling */
+.iframe-list-item.hidden-item {
+  opacity: 0.5;
+  background: #f5f5f5;
+  border-style: dashed;
+  border-color: #ccc;
+}
+
+.iframe-list-item.hidden-item:hover {
+  opacity: 0.7;
+  background: #e9e9e9;
+}
+
+.iframe-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .iframe-item-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .iframe-item-left .drag-handle {
@@ -204,36 +286,80 @@ html,
   font-size: 0.9rem;
   color: #333;
   font-weight: 500;
+  flex: 1;
+}
+
+.hidden-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  background: #ff9800;
+  color: white;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .drag-handle {
   cursor: grab;
   color: #999;
   font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+  color: #0078ff;
+}
+
+/* Sortable.js Animation Classes */
+.sortable-ghost {
+  opacity: 0.4;
+  background: #c8ebfb !important;
+  border: 2px dashed #0078ff !important;
+}
+
+.sortable-chosen {
+  cursor: grabbing !important;
+}
+
+.sortable-drag {
+  opacity: 1;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: rotate(2deg);
 }
 
 .iframe-list-actions {
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #e0e0e0;
 }
 
 .iframe-list-actions button {
   border: none;
-  background: none;
+  background: white;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #555;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 6px 8px;
   border-radius: 4px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
+  flex: 1;
+  border: 1px solid #e0e0e0;
 }
 
 .iframe-list-actions button:hover {
   background-color: #0078ff;
   color: #fff;
+  border-color: #0078ff;
+  transform: translateY(-1px);
+}
+
+.iframe-list-actions button:active {
+  transform: translateY(0);
 }
 
 
