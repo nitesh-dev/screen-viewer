@@ -64,12 +64,12 @@ const App: React.FC = () => {
     setIsDragging(false);
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    const newZoom = Math.max(0.1, Math.min(3, zoom * delta));
-    setZoom(newZoom);
-  };
+  // const handleWheel = (e: React.WheelEvent) => {
+  //   e.preventDefault();
+  //   const delta = e.deltaY > 0 ? 0.9 : 1.1;
+  //   const newZoom = Math.max(0.1, Math.min(3, zoom * delta));
+  //   setZoom(newZoom);
+  // };
 
   const resetView = () => {
     setZoom(1);
