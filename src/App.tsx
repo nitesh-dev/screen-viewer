@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import IframeCard from "./components/IframeCard";
 import { type IframeItem } from "./types";
 import TexturePacker from "./components/TexturePacker/TexturePacker";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   const [iframes, setIframes] = useState<IframeItem[]>(() => {
@@ -110,6 +111,28 @@ const App: React.FC = () => {
 
   return (
     <div className="app-container">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            iconTheme: {
+              primary: "#4ade80",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       <div className="drag-view">
         <div
           className="main-content"

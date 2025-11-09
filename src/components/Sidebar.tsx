@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { ReactSortable } from "react-sortablejs";
+import toast from "react-hot-toast";
 import { type IframeItem } from "../types";
 
 // Icons
@@ -84,10 +85,10 @@ const Sidebar: React.FC<Props> = ({
     
     try {
       await navigator.clipboard.writeText(item.code);
-      alert(`Code copied to clipboard!`);
+      toast.success("Code copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy to clipboard:", err);
-      alert("Failed to copy to clipboard");
+      toast.error("Failed to copy to clipboard");
     }
   };
 
@@ -141,15 +142,15 @@ const Sidebar: React.FC<Props> = ({
           
           if (validItems) {
             setItems(importedData);
-            alert("iFrames imported successfully!");
+            toast.success("iFrames imported successfully!");
           } else {
-            alert("Invalid file format. Please check the JSON structure.");
+            toast.error("Invalid file format. Please check the JSON structure.");
           }
         } else {
-          alert("Invalid file format. Expected an array of iFrame items.");
+          toast.error("Invalid file format. Expected an array of iFrame items.");
         }
       } catch (error) {
-        alert("Error parsing JSON file. Please ensure it's a valid JSON file.");
+        toast.error("Error parsing JSON file. Please ensure it's a valid JSON file.");
       }
     };
     reader.readAsText(file);
