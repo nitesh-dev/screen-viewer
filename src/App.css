@@ -328,6 +328,64 @@ html,
   border-color: #0056b3;
 }
 
+/* === EXPORT/IMPORT CONTROLS === */
+.export-import-controls {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.export-import-controls h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #495057;
+  font-weight: 600;
+}
+
+.export-import-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.export-btn,
+.import-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.export-btn:hover,
+.import-btn:hover {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.export-btn:active,
+.import-btn:active {
+  background: #0056b3;
+  border-color: #0056b3;
+  transform: scale(0.98);
+}
+
+.export-btn svg,
+.import-btn svg {
+  font-size: 14px;
+}
+
 /* === DRAG AND ZOOM STYLES === */
 .main-content {
   transition: transform 0.1s ease-out;
